@@ -1,0 +1,29 @@
+import itertools
+import string
+
+def apply_decryption(cipher_text, key_map):
+    """Decrypts the given text using a key mapping."""
+    reversed_key = {v: k for k, v in key_map.items()}
+    decrypted_text = ''.join(reversed_key.get(char, char) for char in cipher_text)
+    return decrypted_text
+
+def brute_force_monoalphabetic(cipher_text, max_attempts=5):
+    """Attempts to brute-force a monoalphabetic cipher by trying different key permutations."""
+    alphabet = string.ascii_uppercase
+    all_possible_keys = itertools.permutations(alphabet)  
+    
+    print("\n Trying brute-force decryption... (Showing first {} attempts)".format(max_attempts))
+    
+    for attempt, perm in enumerate(all_possible_keys):
+        if attempt >= max_attempts: 
+            break
+        
+        key_map = dict(zip(alphabet, perm))  
+        decrypted_text = apply_decryption(cipher_text, key_map)
+        
+        print(f"\n Attempt {attempt + 1}: Key = {''.join(perm)}")
+        print(f" Decrypted: {decrypted_text}")
+
+
+cipher_text = input("\nEnter the encrypted message: ").upper()
+brute_force_monoalphabetic(cipher_text, max_attempts=5)  
