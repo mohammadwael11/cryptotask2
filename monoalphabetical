@@ -3,8 +3,8 @@ import string
 
 def generate_cipher_mapping():
     alphabet = list(string.ascii_uppercase)
-    shuffled = alphabet[:]  # Copy original alphabet
-    random.shuffle(shuffled)  # Shuffle for a random mapping
+    shuffled = alphabet[:]  
+    random.shuffle(shuffled)  
     return dict(zip(alphabet, shuffled)), dict(zip(shuffled, alphabet)) 
 
 def encrypt(text, mapping):
