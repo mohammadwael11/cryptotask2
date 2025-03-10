@@ -1,0 +1,41 @@
+import random
+import string
+
+def generate_cipher_mapping():
+    alphabet = list(string.ascii_uppercase)
+    shuffled = alphabet[:]  # Copy original alphabet
+    random.shuffle(shuffled)  # Shuffle for a random mapping
+    return dict(zip(alphabet, shuffled)), dict(zip(shuffled, alphabet)) 
+
+def encrypt(text, mapping):
+    text = text.upper()
+    return ''.join(mapping.get(char, char) for char in text)  
+
+def decrypt(text, reverse_mapping):
+    return ''.join(reverse_mapping.get(char, char) for char in text) 
+
+
+encryption_map, decryption_map = generate_cipher_mapping()
+
+
+choice = input("Do you want to (E)ncrypt or (D)ecrypt? ").strip().upper()
+
+if choice == 'E':
+    plaintext = input("Enter text to encrypt: ")
+    encrypted_text = encrypt(plaintext, encryption_map)
+    print("Encrypted Text:", encrypted_text)
+    print("Encryption Mapping:", encryption_map)  
+elif choice == 'D':
+    print("Enter the decryption mapping (key-value pairs). Example: A -> M, B -> X")
+    decryption_map = {}
+    for letter in string.ascii_uppercase:
+        mapped_letter = input(f"{letter} -> ").strip().upper()
+        decryption_map[mapped_letter] = letter 
+    ciphertext = input("Enter text to decrypt: ")
+    decrypted_text = decrypt(ciphertext, decryption_map)
+    print("Decrypted Text:", decrypted_text)
+
+else:
+    print("Invalid choice! Please enter 'E' for encryption or 'D' for decryption.")
+
+
