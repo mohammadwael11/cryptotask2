@@ -1,0 +1,48 @@
+import string
+from collections import Counter
+
+# English letter frequency (approximate percentages)
+ENGLISH_LETTER_FREQUENCY = "ETAOINSHRDLCUMWFGYPBVKJXQZ"
+
+def frequency_analysis(ciphertext):
+    """Performs frequency analysis on the ciphertext."""
+    ciphertext = ciphertext.upper()
+    letter_counts = Counter(ciphertext)
+    
+    # Sort letters by frequency in the text (most frequent first)
+    sorted_letters = sorted(letter_counts.items(), key=lambda item: item[1], reverse=True)
+    sorted_ciphertext_letters = [char for char, _ in sorted_letters if char in string.ascii_uppercase]
+
+    return sorted_ciphertext_letters
+
+def decrypt_with_guess(ciphertext, mapping):
+    """Decrypts using a given letter mapping."""
+    return ''.join(mapping.get(char, char) for char in ciphertext)
+
+def suggest_decryption(ciphertext):
+    """Suggests decryption using frequency analysis."""
+    cipher_freq_order = frequency_analysis(ciphertext)
+
+   
+    mapping = {}
+    for i, cipher_letter in enumerate(cipher_freq_order):
+        if i < len(ENGLISH_LETTER_FREQUENCY):  # Avoid index errors
+            mapping[cipher_letter] = ENGLISH_LETTER_FREQUENCY[i]
+
+    return mapping
+
+
+ciphertext = input("Enter the encrypted text: ")
+
+
+estimated_mapping = suggest_decryption(ciphertext)
+
+
+print("\nSuggested Letter Mapping (Cipher -> English):")
+for cipher_letter, english_letter in estimated_mapping.items():
+    print(f"{cipher_letter} -> {english_letter}")
+
+
+decrypted_text = decrypt_with_guess(ciphertext, estimated_mapping)
+print("\nSuggested Decryption:")
+print(decrypted_text)
